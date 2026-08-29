@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  const BRIDGE_KEY = '__DEEPSEEK_EXT_RELAY__';
+  const BRIDGE_KEY = '__CHAT_CAPTURE_RELAY__';
 
   // 判断扩展上下文是否有效（扩展被重载后 chrome.runtime.id 变为 undefined）
   function extensionValid() {
