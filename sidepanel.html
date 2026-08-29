@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepSeek 复盘</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 420px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f8;
+      padding: 16px;
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .header h2 {
+      font-size: 18px;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge {
+      background: #4a6cf7;
+      color: white;
+      font-size: 11px;
+      padding: 2px 10px;
+      border-radius: 12px;
+    }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .toolbar input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 13px;
+      min-width: 120px;
+    }
+    .toolbar input:focus {
+      outline: none;
+      border-color: #4a6cf7;
+      box-shadow: 0 0 0 3px rgba(74,108,247,0.1);
+    }
+    .btn {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #e5e5e5;
+      color: #333;
+    }
+    .btn:hover { opacity: 0.8; transform: scale(0.97); }
+    .btn-primary { background: #4a6cf7; color: white; }
+    .btn-danger { background: #ef4444; color: white; }
+    .btn-success { background: #22c55e; color: white; }
+    
+    .stats {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    
+    .conversation-item {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border-left: 4px solid #4a6cf7;
+      transition: all 0.2s;
+    }
+    .conversation-item:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .conversation-item .meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 6px;
+    }
+    .conversation-item .title {
+      font-weight: 600;
+      font-size: 13px;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .conversation-item .content-preview {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .conversation-item .content-preview .label {
+      font-weight: 500;
+      color: #4a6cf7;
+    }
+    .conversation-item .actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .conversation-item .actions .btn-sm {
+      padding: 2px 10px;
+      font-size: 11px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #f0f0f0;
+    }
+    .conversation-item .actions .btn-sm:hover {
+      background: #ddd;
+    }
+    .conversation-item .actions .btn-sm.copy {
+      background: #e8f0fe;
+      color: #1a73e8;
+    }
+    .conversation-item .actions .btn-sm.delete {
+      background: #fce8e6;
+      color: #d93025;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2>💬 对话复盘 <span class="badge">DeepSeek</span></h2>
+    <button class="btn btn-danger" id="clearAllBtn" title="清空所有记录">清空</button>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" id="searchInput" placeholder="🔍 搜索对话内容..." />
+    <button class="btn btn-success" id="exportBtn">📥 导出</button>
+  </div>
+
+  <div class="stats" id="stats">共 0 条记录</div>
+
+  <div id="listContainer">
+    <!-- 动态渲染 -->
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
